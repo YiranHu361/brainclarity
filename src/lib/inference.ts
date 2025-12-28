@@ -79,7 +79,7 @@ async function preprocess(buffer: Buffer): Promise<ort.Tensor> {
 }
 
 function softmax(logits: ort.Tensor): number[] {
-  const data = logits.data as Float32Array;
+  const data = Array.from(logits.data as Float32Array);
   const maxLogit = Math.max(...data);
   const exps = data.map((v) => Math.exp(v - maxLogit));
   const sumExp = exps.reduce((a, b) => a + b, 0);
