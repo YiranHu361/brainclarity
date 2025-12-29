@@ -3,6 +3,13 @@ import { runInference } from "@/lib/inference";
 import { logPrediction } from "@/lib/db";
 
 export const runtime = "nodejs";
+export async function GET() {
+  return NextResponse.json({ status: "ok", message: "Use POST with multipart/form-data" });
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({ status: "ok" });
+}
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10MB
 
@@ -82,7 +89,10 @@ export async function POST(request: Request) {
 
     console.error("Inference error:", error);
     return NextResponse.json(
-      { error: "Unable to run analysis right now." },
+      {
+        error: "Unable to run analysis right now.",
+        detail: process.env.NODE_ENV === "production" ? undefined : message,
+      },
       { status: 500 },
     );
   }
