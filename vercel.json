@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**": {
-      "runtime": "nodejs18.x",
+      "runtime": "nodejs20.x",
       "maxDuration": 60,
       "includeFiles": "{node_modules/onnxruntime-node/**,node_modules/sharp/**,public/model/**}"
     }
