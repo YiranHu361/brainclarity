@@ -2,9 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  experimental: {
-    serverComponentsExternalPackages: ["onnxruntime-node", "sharp"],
-  },
+  serverExternalPackages: ["onnxruntime-node", "sharp"],
 };
 
 export default nextConfig;
