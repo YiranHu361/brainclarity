@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "app/api/**/route.ts": {
+      "maxDuration": 30,
+      "includeFiles": [
+        "node_modules/onnxruntime-node/**",
+        "public/model/**"
+      ]
+    }
+  }
+}
