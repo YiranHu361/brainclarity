@@ -6,12 +6,10 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/analyze": [
       "./node_modules/onnxruntime-node/bin/napi-v6/linux/x64/*",
-      "./node_modules/onnxruntime-node/bin/napi-v6/linux/arm64/*",
       "./public/model/**",
     ],
     "/app/api/analyze/route": [
       "./node_modules/onnxruntime-node/bin/napi-v6/linux/x64/*",
-      "./node_modules/onnxruntime-node/bin/napi-v6/linux/arm64/*",
       "./public/model/**",
     ],
   },
