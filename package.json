@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "if [ \"$VERCEL\" = \"1\" ]; then npm run prune-onnx; fi; next build",
+    "build": "npm run prune-onnx && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "prune-onnx": "rm -rf node_modules/onnxruntime-node/bin/napi-v6/win32 node_modules/onnxruntime-node/bin/napi-v6/darwin node_modules/onnxruntime-node/bin/napi-v6/linux/arm node_modules/onnxruntime-node/bin/napi-v6/linux/arm64 node_modules/onnxruntime-node/bin/napi-v6/linux/ppc64le node_modules/onnxruntime-node/bin/napi-v6/linux/aarch64 node_modules/onnxruntime-node/bin/napi-v6/linux/s390x",
-    "postinstall": "if [ \"$VERCEL\" = \"1\" ]; then npm run prune-onnx; fi"
+    "prune-onnx": "if [ \"$(uname)\" = \"Linux\" ]; then rm -rf node_modules/onnxruntime-node/bin/napi-v6/win32 node_modules/onnxruntime-node/bin/napi-v6/darwin node_modules/onnxruntime-node/bin/napi-v6/linux/arm node_modules/onnxruntime-node/bin/napi-v6/linux/arm64 node_modules/onnxruntime-node/bin/napi-v6/linux/ppc64le node_modules/onnxruntime-node/bin/napi-v6/linux/aarch64 node_modules/onnxruntime-node/bin/napi-v6/linux/s390x; else echo \"skip prune-onnx (non-Linux host)\"; fi",
+    "postinstall": "npm run prune-onnx"
   },
   "dependencies": {
     "next": "16.1.1",
