@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "postinstall": "if [ \"$VERCEL\" = \"1\" ]; then rm -rf node_modules/onnxruntime-node/bin/napi-v6/win32 node_modules/onnxruntime-node/bin/napi-v6/darwin node_modules/onnxruntime-node/bin/napi-v6/linux/arm64; fi"
+    "prune-onnx": "rm -rf node_modules/onnxruntime-node/bin/napi-v6/win32 node_modules/onnxruntime-node/bin/napi-v6/darwin node_modules/onnxruntime-node/bin/napi-v6/linux/arm node_modules/onnxruntime-node/bin/napi-v6/linux/arm64 node_modules/onnxruntime-node/bin/napi-v6/linux/ppc64le node_modules/onnxruntime-node/bin/napi-v6/linux/aarch64 node_modules/onnxruntime-node/bin/napi-v6/linux/s390x",
+    "prebuild": "npm run prune-onnx",
+    "postinstall": "if [ \"$VERCEL\" = \"1\" ]; then npm run prune-onnx; fi"
   },
   "dependencies": {
     "next": "16.1.1",
