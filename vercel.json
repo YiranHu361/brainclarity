@@ -2,7 +2,7 @@
   "functions": {
     "app/api/**/route.ts": {
       "maxDuration": 30,
-      "includeFiles": "{node_modules/onnxruntime-node/bin/napi-v6/linux/x64/**,public/model/**}"
+      "includeFiles": "public/model/brain_tumor.onnx,public/model/class_map.json"
     }
   }
 }
