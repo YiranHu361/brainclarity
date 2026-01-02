@@ -6,9 +6,9 @@ export type Prediction = {
   label: string;
   confidence: number;
   probabilities: Record<string, number>;
-  overlayUrl?: string;
-  summary?: string;
-  recommendations?: string[];
+  overlayUrl: string;
+  summary: string;
+  recommendations: string[];
 };
 
 const MODEL_PATH = "/model/brain_tumor.onnx";
