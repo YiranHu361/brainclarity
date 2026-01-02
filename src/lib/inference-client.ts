@@ -18,6 +18,21 @@ const STD = [0.229, 0.224, 0.225];
 
 let sessionPromise: Promise<ort.InferenceSession> | null = null;
 let classNames: string[] | null = null;
+let initialized = false;
+
+async function initOrt(): Promise<void> {
+  if (initialized) return;
+
+  // Configure WASM settings before any session creation
+  // Use exact version matching the package.json
+  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/";
+  // Disable multi-threading to avoid potential issues
+  ort.env.wasm.numThreads = 1;
+  // Disable SIMD if causing issues (uncomment if needed)
+  // ort.env.wasm.simd = false;
+
+  initialized = true;
+}
 
 async function loadClassNames(): Promise<string[]> {
   if (classNames) return classNames;
@@ -29,18 +44,19 @@ async function loadClassNames(): Promise<string[]> {
 
 async function getSession(): Promise<ort.InferenceSession> {
   if (!sessionPromise) {
-    // Configure WASM paths to use CDN for smaller bundle
-    ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.0/dist/";
-
-    // Fetch model as ArrayBuffer for browser compatibility
     sessionPromise = (async () => {
+      await initOrt();
+
       const response = await fetch(MODEL_PATH);
       if (!response.ok) {
         throw new Error(`Failed to load model: ${response.status}`);
       }
       const modelBuffer = await response.arrayBuffer();
+
+      // Create session with explicit options
       return ort.InferenceSession.create(modelBuffer, {
         executionProviders: ["wasm"],
+        graphOptimizationLevel: "basic",
       });
     })();
   }
