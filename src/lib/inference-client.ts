@@ -25,7 +25,7 @@ async function initOrt(): Promise<void> {
 
   // Configure WASM settings before any session creation
   // Use exact version matching the package.json
-  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/";
+  ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/";
   // Disable multi-threading to avoid potential issues
   ort.env.wasm.numThreads = 1;
   // Disable SIMD if causing issues (uncomment if needed)
