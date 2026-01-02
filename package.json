@@ -4,17 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run prune-onnx && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run",
-    "prune-onnx": "if [ \"$(uname)\" = \"Linux\" ]; then rm -rf node_modules/onnxruntime-node/bin/napi-v6/win32 node_modules/onnxruntime-node/bin/napi-v6/darwin node_modules/onnxruntime-node/bin/napi-v6/linux/arm node_modules/onnxruntime-node/bin/napi-v6/linux/arm64 node_modules/onnxruntime-node/bin/napi-v6/linux/ppc64le node_modules/onnxruntime-node/bin/napi-v6/linux/aarch64 node_modules/onnxruntime-node/bin/napi-v6/linux/s390x; else echo \"skip prune-onnx (non-Linux host)\"; fi",
-    "postinstall": "npm run prune-onnx"
+    "test": "vitest run"
   },
   "dependencies": {
     "next": "16.1.1",
     "@neondatabase/serverless": "^0.10.4",
-    "onnxruntime-node": "^1.20.0",
+    "onnxruntime-web": "^1.20.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "sharp": "^0.33.5"

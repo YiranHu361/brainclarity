@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import sharp from "sharp";
-import * as ort from "onnxruntime-node";
+import * as ort from "onnxruntime-web";
 
 export type Prediction = {
   label: string;
@@ -31,8 +31,9 @@ function loadClassNames(): string[] {
 
 async function getSession(): Promise<ort.InferenceSession> {
   if (!sessionPromise) {
-    sessionPromise = ort.InferenceSession.create(MODEL_PATH, {
-      executionProviders: ["cpu"],
+    const modelBuffer = fs.readFileSync(MODEL_PATH);
+    sessionPromise = ort.InferenceSession.create(modelBuffer, {
+      executionProviders: ["wasm"],
     });
   }
   return sessionPromise;
