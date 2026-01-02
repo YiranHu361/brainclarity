@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
+import { runInference } from "@/lib/inference-client";
 
 type AnalysisResult = {
   label: string;
@@ -80,35 +81,33 @@ export default function Home() {
     return () => URL.revokeObjectURL(nextPreview);
   }, [file]);
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = useCallback(async () => {
     setError(null);
     if (!file) {
       setError("Add an MRI file (DICOM/PNG/JPEG) to analyze.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
     setIsLoading(true);
+    const started = Date.now();
 
     try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        body: formData,
+      // Run inference directly in browser using WASM
+      const prediction = await runInference(file);
+      setResult({
+        ...prediction,
+        fileName: file.name,
+        fileSize: file.size,
+        turnaroundMs: Date.now() - started,
+        timestamp: new Date().toISOString(),
       });
-
-      if (!response.ok) {
-        throw new Error("Unable to run analysis right now.");
-      }
-
-      const data = (await response.json()) as AnalysisResult;
-      setResult(data);
     } catch (err) {
+      console.error("Inference error:", err);
       setError(err instanceof Error ? err.message : "Unexpected error.");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [file]);
 
   const loadDemoCase = (caseId: string) => {
     const match = successfulCases.find((c) => c.id === caseId);
