@@ -32,9 +32,17 @@ async function getSession(): Promise<ort.InferenceSession> {
     // Configure WASM paths to use CDN for smaller bundle
     ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.0/dist/";
 
-    sessionPromise = ort.InferenceSession.create(MODEL_PATH, {
-      executionProviders: ["wasm"],
-    });
+    // Fetch model as ArrayBuffer for browser compatibility
+    sessionPromise = (async () => {
+      const response = await fetch(MODEL_PATH);
+      if (!response.ok) {
+        throw new Error(`Failed to load model: ${response.status}`);
+      }
+      const modelBuffer = await response.arrayBuffer();
+      return ort.InferenceSession.create(modelBuffer, {
+        executionProviders: ["wasm"],
+      });
+    })();
   }
   return sessionPromise;
 }
